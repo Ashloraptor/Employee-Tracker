@@ -1,0 +1,1 @@
+SELECT department.id AS department_id,
