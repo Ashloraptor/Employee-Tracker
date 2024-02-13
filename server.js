@@ -22,11 +22,26 @@ const db = mysql.createConnection(
   console.log(`Connected to the tracker_db database.`)
 );
 
-// //Assignment 11, not sure if it works
+// //Assignment 11, not sure if it works or is necessary
 // //Query database
 // db.query('Select * from employees', function (err, results){
 //   console.log(results);
 // });
+
+//Query database using COUNT() and GROUP BY
+db.query('SELECT COUNT(id) AS total_count FROM employee_id GROUP BY role', function (err, results) {
+  console.log(results);
+});
+
+db.query('SELECT COUNT(id) AS total_count FROM role_id GROUP BY department', function (err, results) {
+  console.log(results);
+});
+
+db.query('SELECT COUNT(id) AS total_count FROM department_id', function (err, results) {
+  console.log(results);
+});
+
+//Query database using 
 
 //Default response for any other request (Not Found)
 app.use((req, res) =>{
