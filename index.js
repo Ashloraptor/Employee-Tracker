@@ -1,33 +1,5 @@
-// const mysql = require('mysql2');
-// const inquirer = require('inquirer');
-// const Questions = require('./cli');
-// new Questions().run();
 const connection = require('./connection');
-
-class Database {
-    //Keeping reference to connection in class in case we need it
-    constructor(connection) {
-        this.connection = connection;
-    }
-}
-
-// Connect to database
-const db = mysql.createConnection(
-    {
-        host: 'localhost',
-        // MySQL username,
-        user: 'root',
-        // TODO: Add MySQL password here
-        password: 'MyPassword',
-        database: 'tracker_db'
-    },
-    console.log(`Connected to the tracker_db database.`)
-);
-
-// Begin code (from Sam)
-
 const { prompt } = require("inquirer");
-//const logo = require("asciiart-logo");
 const db = require("./db");
 init();
 function init() {
@@ -51,7 +23,7 @@ function loadMainPrompts() {
                 },
                 {
                     name: 'View all employees',
-                    value: 'VIEW EMPLOYEES'
+                    value: 'VIEW_EMPLOYEES'
                 },
                 {
                     name: 'Add a department',
@@ -67,7 +39,7 @@ function loadMainPrompts() {
                 },
                 {
                     name: 'Update an employee role',
-                    value: 'UPDATE_EMPLOYEE_ROLE'
+                    value: 'UPDATE_EMPLOYEE'
                 },
                 {
                     name: 'Quit',
@@ -79,12 +51,84 @@ function loadMainPrompts() {
         let choice = res.choice;
         // Call the appropriate function depending on what the user chose
         switch (choice) {
-            case "VIEW_EMPLOYEES":
+            case 'VIEW_DEPARTMENTS':
+                viewDepartments();
+                break;
+            case 'VIEW_ROLES':
+                viewRoles();
+                break;
+            case 'VIEW_EMPLOYEES':
                 viewEmployees();
                 break;
+            case 'ADD_DEPARTMENT':
+                addDepartment();
+                break;
+            case 'ADD_ROLE':
+                addRole();
+                break;
+            case 'ADD_EMPLOYEE':
+                addEmployee();
+                break;
+            case 'UPDATE_EMPLOYEE':
+                updateEmployee();
+                break;
+
             default:
                 quit();
         }
     }
     )
-} 
+}
+
+// 'View all departments'
+
+// 'View all roles'
+
+// 'View all employees'
+function viewEmployees() {
+    db.findAllEmployees()
+    .then(([rows])=>{
+        let employees = rows;
+        console.log('\n');
+        console.table(employees);
+    })
+    .then(() => loadMainPrompts());
+}
+
+// //View all employees within a department
+// function viewEmployeesByDeptartment() {
+//     db.findAllDepartments()
+//     .then(([rows])=>{
+//         let department = rows;
+//         const departmentNames = department.map(({id, name})=> ({
+//             name: name,
+//             value: id
+//         }));
+
+//         prompt([
+//             {
+//                 type: 'list',
+//                 name: 'departmentId',
+//                 message: 'Which department would you like to see employees for?',
+//                 choices: departmentNames
+//             }
+//         ])
+//         .then(res => db.findAllEmployeesByDepartment(res.departmentId))
+//         .then(([rows])=> {
+//             let employees = rows;
+//             console.log('\n');
+//             console.table(employees);
+//         })
+//         .then(() => loadMainPrompts())
+//     });
+// }
+
+// 'Add a department'
+// 'Add a role'
+// 'Add an employee'
+// 'Update an employee role'
+//'Quit'
+function quit(){
+    console.log('Thank you for using Employee-Tracker!')
+    return;
+};
