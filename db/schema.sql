@@ -4,30 +4,29 @@ CREATE DATABASE tracker_db;
 USE tracker_db;
 
 CREATE TABLE department (
-    department_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    department_name VARCHAR(30) NOT NULL,
-    PRIMARY KEY (id)
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE role (
-    role_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(30) NOT NULL,
     salary DECIMAL NOT NULL,
-    department_id INT NOT NULL, 
+    department_id INT NOT NULL,
+    INDEX dep_ind (department_id),
+    CONSTRAINT fk_department
     FOREIGN KEY (department_id)
     REFERENCES department(id)
-    --Do I need this line?--
-    --ON DELETE SET NULL--
-    --Does this table also need PRIMARY KEY?--
-    PRIMARY KEY (id)
 );
 
 CREATE TABLE employee (
-    employee_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     role_id INT NOT NULL, 
-    manager_id INT, --can be null--
-    FOREIGN KEY (role_id)
-    REFERENCES role(id)
+    INDEX role_ind (role_id),
+    CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES role(id),
+    manager_id INT UNSIGNED,
+        INDEX man_ind (manager_id),
+    CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES employee(id)
  );
