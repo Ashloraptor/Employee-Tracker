@@ -1,6 +1,6 @@
-const connection = require('./connection');
-const { prompt } = require("inquirer");
-const db = require("./db");
+//const connection = require('./connection.js');
+const { prompt } = require('inquirer');
+const db = require('./db'); //connects to db.index
 init();
 function init() {
 
@@ -81,17 +81,37 @@ function loadMainPrompts() {
 }
 
 // 'View all departments'
+function viewDepartments() {
+    db.findAllDepartments()
+    .then(([rows])=>{
+        let departments = rows;
+        console.log('\n');
+        console.table(departments);
+    })
+    .then(() => loadMainPrompts());
+}
 
 // 'View all roles'
+function viewRoles() {
+    db.findAllRoles()
+    .then(([rows])=>{
+        let roles = rows;
+        console.log('\n');
+        console.table(roles);
+    })
+    .then(() => loadMainPrompts());
+}
+
 
 // 'View all employees'
 function viewEmployees() {
     db.findAllEmployees()
-    .then(([rows])=>{
-        let employees = rows;
-        console.log('\n');
-        console.table(employees);
-    })
+    // .then(([rows])=>{
+    //     let employees = rows;
+    //     console.log('\n');
+    //     console.table(employees);
+    // })
+    
     .then(() => loadMainPrompts());
 }
 
@@ -123,10 +143,63 @@ function viewEmployees() {
 //     });
 // }
 
-// 'Add a department'
+// // 'Add a department'
+// function addDepartment() {
+//     // db.createDepartment()
+
+//     .then(([rows])=>{
+//         let department = rows;
+//         const departmentNames = department.map(({id, name})=> ({
+//             name: name,
+//             value: id
+//         }));
+//         prompt([
+//             {
+//                 type: 'input',
+//                 name: 'departmentName',
+//                 message: 'What is the new department called?'
+//             }
+//         ])
+//         // .then(res => db.createNewDepartment(res.departmentName))
+//         .then(res => db.createDepartment(res.departmentName))
+//     })
+//     .then(() => loadMainPrompts());
+// }
+
 // 'Add a role'
+function addRole(){
+    db.createRole()
+    .then(([rows])=>{
+
+        prompt([
+            {
+                type: 'input',
+                name: 'roleName',
+                message: 'What is the new role called?'
+            }
+        ])
+        .then(res => db.createNewRole(res.roleName))
+    })
+    .then(() => loadMainPrompts());
+}
+
 // 'Add an employee'
+function addEmployee() {
+    db.createEmployee()
+    // .then(([rows])=>{
+    //     let employees = rows;
+    //     console.log('\n');
+    //     console.table(employees);
+    // })
+    .then(() => loadMainPrompts());
+}
 // 'Update an employee role'
+function updateEmployee() {
+    db.updateEmployeeRole()
+    db.updateEmployeeManager()
+    .then(() => loadMainPrompts());
+}
+
 //'Quit'
 function quit(){
     console.log('Thank you for using Employee-Tracker!')
