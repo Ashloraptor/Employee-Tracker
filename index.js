@@ -80,15 +80,24 @@ function loadMainPrompts() {
     )
 }
 
+// // 'View all departments'
+// function viewDepartments() {
+//     db.findAllDepartments()
+//     .then(([rows])=>{
+//         let departments = rows;
+//         console.log('\n');
+//         console.table(departments);
+//     })
+//     .then(() => loadMainPrompts());
+// }
 // 'View all departments'
 function viewDepartments() {
     db.findAllDepartments()
-    .then(([rows])=>{
-        let departments = rows;
-        console.log('\n');
-        console.table(departments);
-    })
-    .then(() => loadMainPrompts());
+    // .then((result)=>{
+    //     console.log(result)
+
+    // .then(() => loadMainPrompts());
+    .then(loadMainPrompts());
 }
 
 // 'View all roles'
@@ -99,7 +108,7 @@ function viewRoles() {
         console.log('\n');
         console.table(roles);
     })
-    .then(() => loadMainPrompts());
+    .then( loadMainPrompts());
 }
 
 
@@ -112,7 +121,7 @@ function viewEmployees() {
     //     console.table(employees);
     // })
     
-    .then(() => loadMainPrompts());
+    .then(loadMainPrompts());
 }
 
 // //View all employees within a department
