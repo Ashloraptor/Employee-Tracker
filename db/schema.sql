@@ -1,4 +1,5 @@
-UPDATE DATABASE tracker_db;
+DROP DATABASE IF EXISTS tracker_db;
+CREATE DATABASE tracker_db;
 
 USE tracker_db;
 
@@ -25,7 +26,5 @@ CREATE TABLE employee (
     role_id INT NOT NULL, 
     INDEX role_ind (role_id),
     CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES role(id),
-    manager_id INT UNSIGNED,
-        INDEX man_ind (manager_id),
-    CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES employee(id)
+     manager_id INT UNSIGNED
  );

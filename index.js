@@ -93,35 +93,35 @@ function loadMainPrompts() {
 // 'View all departments'
 function viewDepartments() {
     db.findAllDepartments()
-    // .then((result)=>{
-    //     console.log(result)
+        // .then((result)=>{
+        //     console.log(result)
 
-    // .then(() => loadMainPrompts());
-    .then(loadMainPrompts());
+        // .then(() => loadMainPrompts());
+        .then(loadMainPrompts());
 }
 
 // 'View all roles'
 function viewRoles() {
     db.findAllRoles()
-    .then(([rows])=>{
-        let roles = rows;
-        console.log('\n');
-        console.table(roles);
-    })
-    .then( loadMainPrompts());
+        .then(([rows]) => {
+            let roles = rows;
+            console.log('\n');
+            console.table(roles);
+        })
+        .then(loadMainPrompts());
 }
 
 
 // 'View all employees'
 function viewEmployees() {
     db.findAllEmployees()
-    // .then(([rows])=>{
-    //     let employees = rows;
-    //     console.log('\n');
-    //     console.table(employees);
-    // })
-    
-    .then(loadMainPrompts());
+        // .then(([rows])=>{
+        //     let employees = rows;
+        //     console.log('\n');
+        //     console.table(employees);
+        // })
+
+        .then(loadMainPrompts());
 }
 
 // //View all employees within a department
@@ -154,14 +154,15 @@ function viewEmployees() {
 
 // // 'Add a department'
 // function addDepartment() {
-//     // db.createDepartment()
 
-//     .then(([rows])=>{
-//         let department = rows;
-//         const departmentNames = department.map(({id, name})=> ({
-//             name: name,
-//             value: id
-//         }));
+// //     // db.createDepartment()
+
+// //     .then(([rows])=>{
+// //         let department = rows;
+// //         const departmentNames = department.map(({id, name})=> ({
+// //             name: name,
+// //             value: id
+// //         }));
 //         prompt([
 //             {
 //                 type: 'input',
@@ -169,48 +170,120 @@ function viewEmployees() {
 //                 message: 'What is the new department called?'
 //             }
 //         ])
-//         // .then(res => db.createNewDepartment(res.departmentName))
+// //         // .then(res => db.createNewDepartment(res.departmentName))
 //         .then(res => db.createDepartment(res.departmentName))
-//     })
+// //     })
 //     .then(() => loadMainPrompts());
 // }
 
-// 'Add a role'
-function addRole(){
-    db.createRole()
-    .then(([rows])=>{
+// Add a department
+function addDepartment() {
+    prompt([
+        {
+            name: "name",
+            message: "What is the name of the department?"
+        }
+    ])
+        .then(res => {
+            let name = res;
+            db.createDepartment(name)
+                .then(() => console.log(`Added ${name.name} to the database`))
+                .then(() => loadMainPrompts())
+        })
+}
 
-        prompt([
-            {
-                type: 'input',
-                name: 'roleName',
-                message: 'What is the new role called?'
-            }
-        ])
-        .then(res => db.createNewRole(res.roleName))
-    })
-    .then(() => loadMainPrompts());
+// 'Add a role'
+function addRole() {
+    prompt([
+        {
+
+            name: 'title',
+            message: 'What is the new role called?'
+        },
+        {
+            type: 'list',
+            name: 'salary',
+            message: 'What is the salary?',
+            choices: ['1', '2', '3', '4']
+        },
+        {
+            type: 'number',
+            name: 'department_id',
+            message: 'What is the department by ID?'
+            //choices: ['1', '2', '3', '4', '5', '6', '7', '8']
+        }
+    ])
+        .then(res => {
+            let title = res;
+            db.createRole(title)
+                .then(() => console.log(`Added ${title.title} to the database`))
+                .then(() => loadMainPrompts())
+        })
 }
 
 // 'Add an employee'
 function addEmployee() {
-    db.createEmployee()
-    // .then(([rows])=>{
-    //     let employees = rows;
-    //     console.log('\n');
-    //     console.table(employees);
-    // })
-    .then(() => loadMainPrompts());
+  //  db.createEmployee()
+    prompt([
+        {
+            name: 'first_name',
+            message: "What is the employee's first name?"
+        },
+        {
+            name: 'last_name',
+            message: "What is the employee's last name?"
+        },
+        {
+            type: 'number',
+            name: 'role_id',
+            message: "What is the employee's role?",
+        },
+        {
+            type: 'list',
+            name: 'manager_id',
+            message: 'Who is their manager by ID?',
+            choices: ['1','16', '17', '18', '19']
+        }
+    ])
+    .then(res => {
+        let name = res;
+        db.createEmployee(name)
+            .then(() => console.log(`Added ${name.name} to the database`))
+            .then(() => loadMainPrompts())
+    })
 }
 // 'Update an employee role'
 function updateEmployee() {
-    db.updateEmployeeRole()
-    db.updateEmployeeManager()
-    .then(() => loadMainPrompts());
+    prompt([
+        {
+            input: 'number',
+            name: 'id',
+            message: 'Which employee would you like to update by ID?'
+        },
+        {
+            input: 'number',
+            name: 'role_id',
+            message: "What is the employee's new role by ID?"
+        }
+        // ,
+        // {
+        //     type: 'list',
+        //     name: 'manager_id',
+        //     message: 'Who is their new manager by ID?',
+        //     choices: ['16', '17', '18', '19'] 
+        // }
+    ])
+    .then(res => {
+        let name = res;            
+    db.updateEmployeeRole(name)
+   // db.updateEmployeeManager(name)
+    .then(() => console.log(`Modified ${name.name} within the database`))
+        .then(() => loadMainPrompts());
+    })
 }
 
 //'Quit'
-function quit(){
+function quit() {
     console.log('Thank you for using Employee-Tracker!')
     return;
 };
