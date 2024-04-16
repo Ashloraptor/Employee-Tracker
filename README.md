@@ -11,3 +11,5 @@ This useful tool allows you to:
 - Add a new employee
 
 [Video Demonstration](https://drive.google.com/file/d/1EDjK2w3_8LLa2TSpbgfvpuj_030tdmBu/view)
+
+![image](https://github.com/Ashloraptor/Employee-Tracker/assets/148083732/4c688c97-4c60-4697-9dd6-600308380a74)
